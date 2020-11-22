@@ -21,7 +21,15 @@ public class RestaurantController {
 
     @GetMapping("/restaurants/{id}")
     public Restaurant detail(@PathVariable("id") Long id){
-        Restaurant restaurant = new Restaurant(1004l, "Bob zip", "Seoul");
+        List<Restaurant> restaurants = new ArrayList<>();
+        restaurants.add(new Restaurant(1004l, "Bob zip", "Seoul"));
+        restaurants.add(new Restaurant(2020l, "Cyber Food", "Seoul"));
+
+        Restaurant restaurant = restaurants.stream()
+                .filter(r -> r.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
         return restaurant;
     }
 }
