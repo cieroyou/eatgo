@@ -1,9 +1,10 @@
 package kr.co.fastcompus.eatgo.domain;
 
 public class Restaurant {
+    private Long id;
     private final String name;
     private String address;
-    private Long id;
+
 
     public Restaurant(Long id, String name, String address) {
         this.id = id;
