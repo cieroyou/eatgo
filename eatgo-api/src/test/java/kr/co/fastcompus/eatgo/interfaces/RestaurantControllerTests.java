@@ -33,7 +33,7 @@ class RestaurantControllerTests {
 
     @Test
     public void detail() throws Exception {
-        mvc.perform(get("/restaurants/1"))
+        mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
                         containsString("\"id\":1004")
