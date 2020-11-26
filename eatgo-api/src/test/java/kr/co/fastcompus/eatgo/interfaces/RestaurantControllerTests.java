@@ -1,7 +1,6 @@
 package kr.co.fastcompus.eatgo.interfaces;
 
-import kr.co.fastcompus.eatgo.domain.RestaurantRepository;
-import kr.co.fastcompus.eatgo.domain.RestaurantRepositoryImpl;
+import kr.co.fastcompus.eatgo.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,9 @@ class RestaurantControllerTests {
 
     @SpyBean(RestaurantRepositoryImpl.class)
     RestaurantRepository repository;
+
+    @SpyBean(MenuItemRepositoryImpl.class)
+    MenuItemRepository menuItemRepository;
     @Test
     public void list() throws Exception {
         mvc.perform(get("/restaurants"))
@@ -33,6 +35,7 @@ class RestaurantControllerTests {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")));
+
 
     }
 
@@ -44,7 +47,10 @@ class RestaurantControllerTests {
                         containsString("\"id\":1004")
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Bob zip\"")));
+                        containsString("\"name\":\"Bob zip\"")))
+                .andExpect(content().string(
+                        containsString("Kimchi")
+                ));
 
         mvc.perform(get("/restaurants/2020"))
                 .andExpect(status().isOk())
@@ -52,6 +58,9 @@ class RestaurantControllerTests {
                         containsString("\"id\":2020")
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Cyber Food\"")));
+                        containsString("\"name\":\"Cyber Food\"")))
+                .andExpect(content().string(
+                        containsString("Kimchi")
+                ));
     }
 }
