@@ -1,11 +1,13 @@
 package kr.co.fastcompus.eatgo.interfaces;
 
+import kr.co.fastcompus.eatgo.application.RestaurantService;
 import kr.co.fastcompus.eatgo.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,6 +22,9 @@ class RestaurantControllerTests {
 
     @Autowired
     private MockMvc mvc;
+
+    @SpyBean(RestaurantService.class)
+    RestaurantService restaurantService;
 
     @SpyBean(RestaurantRepositoryImpl.class)
     RestaurantRepository repository;
