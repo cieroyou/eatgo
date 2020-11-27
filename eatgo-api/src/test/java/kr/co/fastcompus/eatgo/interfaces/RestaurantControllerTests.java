@@ -4,35 +4,38 @@ import kr.co.fastcompus.eatgo.application.RestaurantService;
 import kr.co.fastcompus.eatgo.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @WebMvcTest(RestaurantController.class)
 class RestaurantControllerTests {
 
     @Autowired
     private MockMvc mvc;
 
-    @SpyBean(RestaurantService.class)
+    @MockBean(RestaurantService.class)
     RestaurantService restaurantService;
 
-    @SpyBean(RestaurantRepositoryImpl.class)
-    RestaurantRepository repository;
-
-    @SpyBean(MenuItemRepositoryImpl.class)
-    MenuItemRepository menuItemRepository;
     @Test
     public void list() throws Exception {
+        List<Restaurant> restaurants = new ArrayList<>();
+        restaurants.add(new Restaurant(1004L, "Bob zip", "Seoul"));
+        BDDMockito.given(restaurantService.getRestaurants()).willReturn(restaurants);
+
         mvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
@@ -40,12 +43,22 @@ class RestaurantControllerTests {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")));
-
-
     }
 
     @Test
     public void detail() throws Exception {
+        Restaurant restaurant1 = new Restaurant(1004L, "Bob zip", "Seoul");
+        Restaurant restaurant2 = new Restaurant(2020L, "Cyber Food", "Seoul");
+
+        restaurant1.addMenuItem(new MenuItem("Kimchi"));
+        restaurant2.addMenuItem(new MenuItem("Kimchi"));
+        List<Restaurant> restaurants = new ArrayList<>();
+        restaurants.add(restaurant1);
+        restaurants.add(restaurant2);
+
+        BDDMockito.given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
+        BDDMockito.given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
+
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
