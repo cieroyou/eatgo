@@ -47,6 +47,7 @@ class RestaurantServiceTest {
         assertEquals(restaurant.getMenuItems().get(0).getName(), "Kimchi");
     }
 
+
     public void mockRestaurantRepository(){
         List<Restaurant> restaurants = new ArrayList<>();
         Restaurant restaurant = new Restaurant(1004L, "Bob zip", "Seoul");
