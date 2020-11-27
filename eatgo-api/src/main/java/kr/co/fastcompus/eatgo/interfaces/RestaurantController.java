@@ -1,35 +1,44 @@
 package kr.co.fastcompus.eatgo.interfaces;
 
-import kr.co.fastcompus.eatgo.domain.Restaurant;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import kr.co.fastcompus.eatgo.application.RestaurantService;
+import kr.co.fastcompus.eatgo.domain.*;
+import kr.co.fastcompus.eatgo.domain.MenuItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class RestaurantController {
 
+    @Autowired
+    private RestaurantService restaurantService;
+
+
     @GetMapping("/restaurants")
     public List<Restaurant> list() {
-        List<Restaurant> restaurants = new ArrayList<>();
-        Restaurant restaurant = new Restaurant(1004l, "Bob zip", "Seoul");
-        restaurants.add(restaurant);
-        return restaurants;
+        return restaurantService.getRestaurants();
     }
 
     @GetMapping("/restaurants/{id}")
-    public Restaurant detail(@PathVariable("id") Long id){
-        List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1004l, "Bob zip", "Seoul"));
-        restaurants.add(new Restaurant(2020l, "Cyber Food", "Seoul"));
-
-        Restaurant restaurant = restaurants.stream()
-                .filter(r -> r.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+    public Restaurant detail(@PathVariable("id") Long id) {
+        Restaurant restaurant = restaurantService.getRestaurant(id);
 
         return restaurant;
     }
+
+    @PostMapping("/restaurants")
+    public ResponseEntity<?> create(@RequestBody Restaurant resource) throws URISyntaxException {
+        String name = resource.getName();
+        String address = resource.getAddress();
+        Restaurant restaurant = new Restaurant(1234L, name, address);
+        restaurantService.addRestaurant(restaurant);
+        URI uri = new URI("/restaurants/" + restaurant.getId());
+        return ResponseEntity.created(uri).body("{}");
+    }
+
 }
