@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,10 +51,10 @@ class RestaurantServiceTest {
 
     public void mockRestaurantRepository(){
         List<Restaurant> restaurants = new ArrayList<>();
-        Restaurant restaurant = new Restaurant(1004L, "Bob zip", "Seoul");
+        Restaurant restaurant = new Restaurant("Bob zip", "Seoul");
         restaurants.add(restaurant);
         BDDMockito.given(restaurantRepository.findAll()).willReturn(restaurants);
-        BDDMockito.given(restaurantRepository.findById(1004L)).willReturn(restaurant);
+        BDDMockito.given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
     }
 
     public void mockMenuItemRepository(){
