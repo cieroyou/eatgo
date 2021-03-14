@@ -35,7 +35,7 @@ class RestaurantControllerTests {
     @Test
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1004L, "Bob zip", "Seoul"));
+        restaurants.add(new Restaurant("Bob zip", "Seoul"));
         BDDMockito.given(restaurantService.getRestaurants()).willReturn(restaurants);
 
         mvc.perform(get("/restaurants"))
@@ -49,8 +49,8 @@ class RestaurantControllerTests {
 
     @Test
     public void detail() throws Exception {
-        Restaurant restaurant1 = new Restaurant(1004L, "Bob zip", "Seoul");
-        Restaurant restaurant2 = new Restaurant(2020L, "Cyber Food", "Seoul");
+        Restaurant restaurant1 = new Restaurant("Bob zip", "Seoul");
+        Restaurant restaurant2 = new Restaurant("Cyber Food", "Seoul");
 
         restaurant1.addMenuItem(new MenuItem("Kimchi"));
         restaurant2.addMenuItem(new MenuItem("Kimchi"));

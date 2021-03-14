@@ -8,7 +8,7 @@ class RestaurantTests {
 
     @Test
     public void creation() {
-        Restaurant restaurant = new Restaurant(1004l, "Bob zip", "Seoul");
+        Restaurant restaurant = new Restaurant("Bob zip", "Seoul");
         assertEquals(restaurant.getName(), "Bob zip");
         assertEquals(restaurant.getAddress(), "Seoul");
         assertEquals(restaurant.getId(), 1004l);
@@ -16,7 +16,7 @@ class RestaurantTests {
 
     @Test
     public void information() {
-        Restaurant restaurant = new Restaurant(1004l, "Bob zip", "Seoul");
+        Restaurant restaurant = new Restaurant("Bob zip", "Seoul");
         assertEquals(restaurant.getInformation(), "Bob zip in Seoul");
     }
 

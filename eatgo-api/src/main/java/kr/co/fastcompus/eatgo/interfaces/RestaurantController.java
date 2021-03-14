@@ -35,8 +35,9 @@ public class RestaurantController {
     public ResponseEntity<?> create(@RequestBody Restaurant resource) throws URISyntaxException {
         String name = resource.getName();
         String address = resource.getAddress();
-        Restaurant restaurant = new Restaurant(1234L, name, address);
+        Restaurant restaurant = new Restaurant(name, address);
         restaurantService.addRestaurant(restaurant);
+
         URI uri = new URI("/restaurants/" + restaurant.getId());
         return ResponseEntity.created(uri).body("{}");
     }
